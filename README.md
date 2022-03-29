@@ -1,38 +1,40 @@
 # sbcntr-backend 
-書籍用のバックエンドAPI用のダウンロードリポジトリです。
+
+AWS 실습용 백엔드 API용 리포지토리다.
+
 
 ## 概要
-echoフレームワークを利用した、Golang製のAPIサーバーです。
-Golangには数多くのフレームワークがあります。
-REST APIサーバーを実装するために十分な機能が備わっていることや、ドキュメントが充実していることから今回echoを選択しています。
+echo 프레임워크를 이용한 Go 언어 API 서버다.
+Go 언어에는 다양한 프레임워크가 있다.
+REST API 서버를 구현하기 위해 충분한 기능을 가졌으며 관련 정보도 많은 echo 를 이용한다.
 
-APIサーバーとDB(MySQL)の接続はO/RマッパライブラリであるGORM[^gorm]を利用しています。
+API 서버와 DB(MySQL)의 접속은 Go의 ORM 중 하나인 GORM[^gorm]을 이용한다.
 
 [^gorm]: https://gorm.io/
 
-バックエンドアプリケーションは次の2つのサービスを備えています。
-また、各APIエンドポイントの接頭辞として、`/v1`が付与されます。
+백엔드 애플리케이션은 다음 2가지 서비스를 제공한다.
+각 API 엔드포인트의 집속 접두사는 `/v1`이다.
 
-- Itemサービス(アイテムサービス)
-  - DB接続なしで画面表示をするためのHelloworldを返却します(/helloworld)
-  - Itemテーブルに登録されているデータを返却します(/Item)
-  - フロントエンドから入力した情報を元にItemを新規作成します(/Item)
-  - Itemへお気に入りマークのOn/Offを可能とします(/Item/favorite)
-- Notifiationサービス(通知サービス)
-  - Notificationテーブルに登録されているデータを返却します(/Notifications)
-    - クエリパラメータでidを渡すことで特定のデータのみを返却します
-  - 通知バッジを表示するために未読の通知件数を返却します(/Notifiactions/Count)
-  - 未読の通知を一括で既読に変更します(/Notifications/Read)
+- Item서비스
+  - DB 접속 없이 화면 표시를 하기 위해 Helloworld를 반환한다(/helloworld)
+  - Item테이블에 등록된 데이터를 반환한다(/Item)
+  - 프론트엔드에서 입력된 정보를 이용해 Item을 등록한다(/Item)
+  - Item에 찜 마크를 붙이거나 제거한다(/Item/favorite)
+- Notifiation서비스
+  - Notification테이블에 등록된 데이터를 반환한다(/Notifications)
+    - 질의 매개변수로 id를 이용해 특정 데이터만 반환한다
+  - 알림 뱃지를 표시하기 위해 읽기 않은 알림 수를 반환한다(/Notifiactions/Count)
+  - 읽지 않은 알림을 일괄 읽음으로 변경한다(/Notifications/Read)
 
-## 利用想定
-本書の内容に沿って、ご利用ください。
+## 이용 범위
+이 책의 내용에 따라 이용해주세요.
 
-## ローカル利用方法
+## 로컬에서 이용하는 방법
 
-### 事前準備
-- Goのバージョンは16系を利用します。
-- GOPATHの場所に応じて適切なディレクトリに、このリポジトリのコードをクローンしてください。
-- 次のコマンドを利用してモジュールをダウンロードしてください。
+### 사전 준비
+- Go 버전은 16.x를 이용한다
+- GOPATH에 따라 적절한 디렉토리에 이 리포지토리를 복사한다
+- 다음 명령어를 이용해 모듈을 다운로드 한다
 
 ```bash
 $ go get golang.org/x/lint/golint
@@ -40,27 +42,27 @@ $ go install
 $ go mod download
 ```
 
-- 本バックエンドAPIではDB接続があります。DB接続のために次の環境変数を設定してください。
+- 이 백엔드는 DB와의 접속이 필요하다. DB 접속을 위해 다음 환경 변수를 지정한다
   - DB_HOST
   - DB_USERNAME 
   - DB_PASSWORD 
   - DB_NAME
 
-### DBの用意
+### DB 준비
 
-事前にローカルでMySQLサーバを立ち上げてください。
+로컬에 MySQL 서버를 설치한다
 
 https://dev.mysql.com/downloads/mysql/
 
-### ビルド＆デプロイ
+### 빌드 및 배포
 
-#### ローカルで動かす場合
+#### 로컬에서 실행하는 경우
 
 ```bash
 ❯ make all
 ```
 
-#### Dockerから動かす場合
+#### Docker를 이용하는 경우
 
 ```bash
 ❯ docker build -t sbcntr-backend:latest .
@@ -71,7 +73,7 @@ sbcntr-backend                   latest              cdb20b70f267        58 minu
 ❯ docker run -d -p 80:80 sbcntr-backend:latest
 ```
 
-### デプロイ後の疎通確認
+### 배포 후 통신 확인
 
 ```bash
 ❯ curl http://localhost:80/v1/helloworld
@@ -81,5 +83,5 @@ sbcntr-backend                   latest              cdb20b70f267        58 minu
 null
 ```
 
-## 注意事項
-- Mac OS Bigsur 11.6でのみ動作確認しています。
+## 주의사항
+- 로컬 환경은 macOS Bigsur 11.6 및 Monterey 12.1 에서만 테스트됐음
